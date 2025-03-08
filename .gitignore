@@ -1,0 +1,5 @@
+.env.local
+.vscode/*
+node_modules/*
+docker-composer.yml
+dockerfile

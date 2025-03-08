@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: postgres       # Substitua pelo seu usuário do PostgreSQL
+      POSTGRES_PASSWORD: postgres     # Substitua pela sua senha do PostgreSQL
+      POSTGRES_DB: monetz           # Substitua pelo nome do banco de dados
+    ports:
+      - "5432:5432"                    # Expõe a porta 5432 do container para o host
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persiste os dados do PostgreSQL
+    networks:
+      - app_network
+
+  # Serviço da aplicação Go
+  app:
+    build:
+      context: .                       # Usa o Dockerfile no diretório atual
+      dockerfile: Dockerfile           # Nome do Dockerfile
+    container_name: go_app_container
+    ports:
+      - "8080:8080"                    # Expõe a porta 8080 do container para o host
+    environment:
+      DB_HOST: localhost                # Nome do serviço do PostgreSQL no Docker Compose
+      DB_PORT: 5432                    # Porta do PostgreSQL
+      DB_USER: postgres             # Substitua pelo seu usuário do PostgreSQL
+      DB_PASSWORD: postgres           # Substitua pela sua senha do PostgreSQL
+      DB_NAME: monetz               # Substitua pelo nome do banco de dados
+    depends_on:
+      - postgres                       # Garante que o PostgreSQL inicie antes da aplicação
+    networks:
+      - app_network
+
+# Volumes para persistência de dados
+volumes:
+  postgres_data:
+
+# Redes para comunicação entre containers
+networks:
+  app_network:
+    driver: bridge
