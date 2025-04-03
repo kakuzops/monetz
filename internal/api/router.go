@@ -29,16 +29,24 @@ func SetupRouter() *gin.Engine {
 	authGroup := router.Group("/api")
 	authGroup.Use(middlewares.JWTMiddleware())
 	{
+		// Product routes
 		authGroup.POST("/products", handlers.CreateProduct)
 		authGroup.GET("/products", handlers.ListProducts)
 
-		// Rotas para Material
+		// Material routes
 		authGroup.POST("/materials", handlers.CreateMaterial)
 		authGroup.GET("/materials", handlers.ListMaterials)
 
-		// Rotas para Color
+		// Color routes
 		authGroup.POST("/colors", handlers.CreateColor)
 		authGroup.GET("/colors", handlers.ListColors)
+
+		// Category routes
+		authGroup.POST("/categories", handlers.CreateCategory)
+		authGroup.GET("/categories", handlers.GetCategories)
+		authGroup.GET("/categories/:id", handlers.GetCategory)
+		authGroup.PUT("/categories/:id", handlers.UpdateCategory)
+		authGroup.DELETE("/categories/:id", handlers.DeleteCategory)
 
 		dashboardGroup := authGroup.Group("/admin")
 		dashboardGroup.Use(middlewares.AdminMiddleware())

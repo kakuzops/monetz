@@ -21,7 +21,7 @@ func InitDB() {
 	}
 
 	// Migrar modelos
-	err = DB.AutoMigrate(&models.User{}, &models.Product{}, &models.Material{}, &models.Color{})
+	err = DB.AutoMigrate(&models.User{}, &models.Product{}, &models.Material{}, &models.Color{}, &models.Category{})
 	if err != nil {
 		panic(fmt.Sprintf("Failed to migrate database: %v", err))
 	}
