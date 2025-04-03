@@ -3,11 +3,11 @@ version: '3.8'
 services:
   postgres:
     image: postgres:latest
-    container_name: cost_matter_postgres
+    container_name: monetz_postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: cost_matter_db
+      POSTGRES_DB: monetz_db
     ports:
       - "5432:5432"
     volumes:
