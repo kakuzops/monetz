@@ -10,5 +10,6 @@ type Product struct {
 	Description string     `json:"description"`
 	Price       float64    `json:"price" validate:"required"`
 	UserID      string     `json:"user_id"`
+	Stock       int        `json:"stock" validate:"`
 	Categories  []Category `gorm:"many2many:product_categories;" json:"categories"`
 }

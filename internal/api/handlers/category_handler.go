@@ -140,7 +140,7 @@ func UpdateCategory(c *gin.Context) {
 	category.UserID = userID.(string)
 
 	if err := categoryService.UpdateCategory(&category); err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Category not found"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update category"})
 		return
 	}
 

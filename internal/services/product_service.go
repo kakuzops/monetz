@@ -20,3 +20,11 @@ func (s *ProductService) CreateProduct(product *models.Product) error {
 func (s *ProductService) ListProducts(userID string) ([]models.Product, error) {
 	return s.productRepo.ListByUserID(userID)
 }
+
+func (s *ProductService) DeleteProduct(productID string) error {
+	return s.productRepo.Delete(productID)
+}
+
+func (s *ProductService) UpdateProduct(productID string, name string, price string, stock int) error {
+	return s.productRepo.Update(productID, name, price, stock)
+}

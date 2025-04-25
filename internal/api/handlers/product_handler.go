@@ -6,6 +6,7 @@ import (
 	"monetz/internal/repositories"
 	"monetz/internal/services"
 
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -18,7 +19,6 @@ func CreateProduct(c *gin.Context) {
 		return
 	}
 
-	// Obtém o ID do usuário do contexto
 	userID, _ := c.Get("user_id")
 	product.UserID = userID.(string)
 
@@ -32,7 +32,6 @@ func CreateProduct(c *gin.Context) {
 }
 
 func ListProducts(c *gin.Context) {
-	// Obtém o ID do usuário do contexto
 	userID, _ := c.Get("user_id")
 
 	productService := services.NewProductService(repositories.NewProductRepository(database.DB))
@@ -42,5 +41,40 @@ func ListProducts(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"products": products})
+	c.JSON(http.StatusOK, products)
+}
+
+func DeleteProduct(c *gin.Context) {
+	productID := c.Param("id")
+
+	productService := services.NewProductService(repositories.NewProductRepository(database.DB))
+	if err := productService.DeleteProduct(productID); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete product"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Product deleted successfully"})
+}
+
+func UpdateProduct(c *gin.Context) {
+	productID := c.Param("id")
+	productService := services.NewProductService(repositories.NewProductRepository(database.DB))
+
+	var input struct {
+		Name  string  `json:"name"`
+		Price float64 `json:"price"`
+		Stock int     `json:"stock"`
+	}
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := productService.UpdateProduct(productID, input.Name, fmt.Sprintf("%.2f", input.Price), input.Stock); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update product"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Product updated successfully"})
 }

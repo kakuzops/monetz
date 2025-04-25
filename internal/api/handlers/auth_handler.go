@@ -97,14 +97,12 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	// Verifica se o hash armazenado é válido
 	if len(user.PasswordHash) < 60 {
 		log.Printf("Stored hash is invalid for user %s", input.Email)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid password hash stored"})
 		return
 	}
 
-	// Verifica a senha
 	err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(input.Password))
 	if err != nil {
 		log.Printf("Password mismatch for user %s: %v", input.Email, err)
@@ -122,6 +120,9 @@ func Login(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Login successful",
+		"name":    user.Name,
+		"email":   user.Email,
+		"role":    user.Role,
 		"token":   token,
 	})
 }
