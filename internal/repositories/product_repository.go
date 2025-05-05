@@ -31,3 +31,11 @@ func (r *ProductRepository) Delete(productID string) error {
 func (r *ProductRepository) Update(productID string, name string, price string, stock int) error {
 	return r.db.Model(&models.Product{}).Where("id = ?", productID).Updates(map[string]interface{}{"name": name, "price": price, "stock": stock}).Error
 }
+
+func (r *ProductRepository) GetCount(userID string) (int, error) {
+	var count int64
+	if err := r.db.Model(&models.Product{}).Where("user_id = ?", userID).Count(&count).Error; err != nil {
+		return 0, err
+	}
+	return int(count), nil
+}

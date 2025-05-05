@@ -78,3 +78,16 @@ func UpdateProduct(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Product updated successfully"})
 }
+
+func GetCountProduct(c *gin.Context) {
+	userID, _ := c.Get("user_id")
+
+	productService := services.NewProductService(repositories.NewProductRepository(database.DB))
+	count, err := productService.GetCountProduct(userID.(string))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get count product"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"count": count})
+}

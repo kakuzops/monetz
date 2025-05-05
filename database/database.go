@@ -20,8 +20,13 @@ func InitDB() {
 		panic(fmt.Sprintf("Failed to connect to database: %v", err))
 	}
 
-	// Migrar modelos
-	err = DB.AutoMigrate(&models.User{}, &models.Product{}, &models.Material{}, &models.Color{}, &models.Category{})
+	err = DB.AutoMigrate(&models.User{},
+		&models.Product{},
+		&models.Material{},
+		&models.Color{},
+		&models.Category{},
+		&models.Seller{},
+	)
 	if err != nil {
 		panic(fmt.Sprintf("Failed to migrate database: %v", err))
 	}

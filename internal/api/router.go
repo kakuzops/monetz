@@ -47,6 +47,7 @@ func SetupRouter() *gin.Engine {
 		authGroup.GET("/products", handlers.ListProducts)
 		authGroup.DELETE("/products/:id", handlers.DeleteProduct)
 		authGroup.PUT("/products/:id", handlers.UpdateProduct)
+		authGroup.GET("/products/count", handlers.GetCountProduct)
 
 		// Material routes
 		authGroup.POST("/materials", handlers.CreateMaterial)
@@ -62,6 +63,12 @@ func SetupRouter() *gin.Engine {
 		authGroup.GET("/categories/:id", handlers.GetCategory)
 		authGroup.PUT("/categories/:id", handlers.UpdateCategory)
 		authGroup.DELETE("/categories/:id", handlers.DeleteCategory)
+
+		// Seller routes
+		authGroup.POST("/sellers", handlers.CreateSeller)
+		authGroup.GET("/sellers", handlers.ListSellers)
+		authGroup.DELETE("/sellers/:id", handlers.DeleteSeller)
+		authGroup.PUT("/sellers/:id", handlers.UpdateSeller)
 
 		dashboardGroup := authGroup.Group("/admin")
 		dashboardGroup.Use(middlewares.AdminMiddleware())

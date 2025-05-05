@@ -28,3 +28,7 @@ func (s *ProductService) DeleteProduct(productID string) error {
 func (s *ProductService) UpdateProduct(productID string, name string, price string, stock int) error {
 	return s.productRepo.Update(productID, name, price, stock)
 }
+
+func (s *ProductService) GetCountProduct(userID string) (int, error) {
+	return s.productRepo.GetCount(userID)
+}
